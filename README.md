@@ -2,9 +2,9 @@
 
 # CLINOTE
 
-**Clinical NLP SaaS for Spanish-speaking physicians**
+**SaaS Clínico NLP para médicos hispanohablantes**
 
-Transform free-text Spanish clinical notes into structured SOAP, clinical entities, CDSS alerts, FHIR R4 bundles, and evidence-backed recommendations — in seconds, via streaming.
+Transforma notas clínicas en español de texto libre en formato SOAP estructurado, extracción de entidades clínicas, alertas CDSS, bundles FHIR R4 y recomendaciones basadas en evidencia — en segundos, vía streaming.
 
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
@@ -12,58 +12,58 @@ Transform free-text Spanish clinical notes into structured SOAP, clinical entiti
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL+RLS-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com/)
 [![Anthropic](https://img.shields.io/badge/Anthropic-Claude_Sonnet-D97757?style=flat-square)](https://www.anthropic.com/)
-[![Tests](https://img.shields.io/badge/Tests-27%2F27_passing-22C55E?style=flat-square)](./backend/tests)
+[![Tests](https://img.shields.io/badge/Tests-27%2F27_assing-22C55E?style=flat-square)](./backend/tests)
 [![License](https://img.shields.io/badge/License-MIT-6366F1?style=flat-square)](./LICENSE)
-[![GDPR](https://img.shields.io/badge/Compliance-RGPD%2FGDPR-0EA5E9?style=flat-square)](./RGPD.md)
+[![GDPR](https://img.shields.io/badge/Cumplimiento-RGPD%2FGDPR-0EA5E9?style=flat-square)](./RGPD.md)
 
 </div>
 
 ---
 
-> **Demo GIF** — To add a demo: record your screen processing a sample note, export as GIF
-> (recommended: [LICEcap](https://www.cockos.com/licecap/) on Windows/macOS or [Kap](https://getkap.co/) on macOS),
-> save as `docs/demo.gif`, then replace this block with:
-> `![CLINOTE Demo](docs/demo.gif)`
+> **Demo GIF** — Para agregar un demo: graba tu pantalla procesando una nota de prueba, expórtala como GIF
+> (Recomendado: [LICEcap](https://www.cockos.com/licecap/) en Windows/macOS o [Kap](https://getkap.co/) en macOS),
+> guárdalo como `docs/demo.gif`, luego reemplaza este bloque con:
+> `![Demo CLINOTE](docs/demo.gif)`
 
 ---
 
-## The Problem
+## El Problema
 
-Spanish-speaking physicians spend 30–40% of their shift writing unstructured clinical notes. These notes contain critical information — drug interactions, lab anomalies, diagnoses — buried in free text, invisible to decision-support systems, impossible to integrate with EHRs, and inaccessible for evidence retrieval.
+Los médicos hispanohablantes dedican entre el 30% y el 40% de su turno a redactar notas clínicas no estructuradas. Estas notas contienen información crítica — interacciones medicamentosas, anomalías de laboratorios, diagnósticos — escondida en texto libre de forma que los sistemas de apoyo a decisiones (CDSS) no la ven. Es imposible integrarlo con los EHR (Historia Clínica Electrónica) convencionales resultando inoperativo e inaccesible para recuperar información basada en la evidencia.
 
-**CLINOTE solves this.** Paste a clinical note in Spanish. Get back a structured clinical record in under 3 seconds.
-
----
-
-## Features
-
-- **NLP Entity Extraction** — Diagnoses, medications, allergies, lab values, vital signs, symptoms, procedures, and family history extracted from unstructured Spanish text
-- **SOAP Structuring** — Automatic Subjective / Objective / Assessment / Plan generation from free-text notes
-- **CDSS Alerts** — Three parallel decision-support modules: RxNorm drug-drug interactions, critical lab value thresholds (35+ rules), and LLM-based contextual reasoning
-- **FHIR R4 Bundle** — Valid HL7 FHIR R4 Bundle with Condition, MedicationStatement, Observation, AllergyIntolerance, and Procedure resources — ready for EHR integration
-- **Evidence Layer** — Asynchronous PubMed E-utilities + Cochrane search, 24h Supabase cache, delivered via SSE after primary results
-- **Real-time Streaming** — Server-Sent Events (SSE) pipeline: status → entities → SOAP → alerts → FHIR → evidence, no polling required
-- **Multi-tenant with RLS** — Organizations, users, and cases isolated at the database level via PostgreSQL Row-Level Security (14 policies)
-- **Rate Limiting by Plan** — Free: 10 notes/month, 2 req/min · Pro: unlimited notes, 10 req/min · Clinic: 30 req/min
-- **Spanish Medical Abbreviations** — 50+ abbreviations handled (HTA, DM2, IAM, EPOC, IRC, and more)
-- **RGPD/GDPR Compliant** — Audit log on every action, note hashing (no raw PII in logs), RLS data isolation, right-to-deletion endpoints in roadmap
-- **Prompt Injection Protection** — Regex-based sanitizer preserving clinical text (drug doses, lab values, Spanish abbreviations)
-- **TOTP MFA** — Available for all users, enforced for admin roles
+**CLINOTE soluciona esto.** Inserta una nota clínica en español. Recibe una historia formatizada y estructurada en menos de 3 segundos.
 
 ---
 
-## Architecture
+## Características
+
+- **Extracción NLP de Entidades** — Diagnósticos, medicamentos, alergias, valores de laboratorio, signos vitales, síntomas, procedimientos y antecedentes familiares detectados a partir de texto libre en español.
+- **Estructuración SOAP** — Generación automática del esquema Subjetivo / Objetivo / Análisis / Plan directamente de los apuntes no estructurados.
+- **Alertas CDSS** — Tres módulos independientes que trabajan en paralelo para predecir e informar decisiones: consultas de interacciones (por RxNorm), niveles críticos de laboratorios (más de 35 reglas) y el análisis de contexto por LLM para razonamientos sutiles.
+- **Bundle FHIR R4** — Salida compatible en HL7 FHIR R4 Bundle con recursos de Condition, MedicationStatement, Observation, AllergyIntolerance y Procedure — preparados para integración a Historias Clínicas.
+- **Capa de Evidencia** — Proceso en segundo plano usando PubMed E-utilities + Búsqueda en Cochrane, resultados almacenados en Supabase (caché de 24h), integrados por eventos de Server-Sent Event (SSE) una vez evaluados.
+- **Streaming en Tiempo Real** — Pipeline Server-Sent Events (SSE): estado → entidades → SOAP → alertas → FHIR → evidencia, no se necesita carga o *polling*.
+- **Aislamiento Multiusuario (Multi-tenant) a Nivel RLS** — Los usuarios, organizaciones, perfiles y datos permanecen ocultos con Políticas RLS seguras en PostgreSQL (14 políticas).
+- **Límites de Peticiones** — Plan gratis: 10 notas/mes, 2 req/min · Plan Pro: Notas ilimitadas, 10 req/min · Plan Clínico: 30 req/min.
+- **Abreviaturas Clínicas en Español Resueltas** — Soporte para más de 50 abreviaturas comúnmente usadas como HTA, DM2, IAM, EPOC, IRC de manera natural e impecable.
+- **Cumplimiento y Regulaciones (RGPD)** — Trazabilidad en auditorías o logs, cifrado de todas las notas (eliminando PII real en los servidores), reglas aisladas, e infraestructura pensada en regulaciones.
+- **Defensa ante Inyección de Prompts** — Sanitizaciones a nivel regex, filtrando basura para garantizar la legibilidad humana.
+- **TOTP MFA (Autenticación de 2 Factores)** — Soporte de Google Authenticator.
+
+---
+
+## Arquitectura
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        CLINOTE SYSTEM                            │
+│                        SISTEMA CLINOTE                           │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                   │
-│   Browser / Client                                                │
+│  Navegador / Cliente                                              │
 │   ┌─────────────────────┐                                        │
 │   │   Next.js 15        │  App Router + SSR                      │
 │   │   Tailwind + shadcn │  Supabase Auth (TOTP MFA)              │
-│   │   SSE EventSource   │  Streaming UI (status → results)       │
+│   │   SSE EventSource   │  Streaming UI (estado → resultados)    │
 │   └──────────┬──────────┘                                        │
 │              │  POST /api/v1/analyze (JWT Bearer)                │
 │              ▼                                                    │
@@ -71,152 +71,152 @@ Spanish-speaking physicians spend 30–40% of their shift writing unstructured c
 │   │                  FastAPI (Railway)                        │  │
 │   │                                                           │  │
 │   │  ┌─────────────┐   ┌──────────────────┐   ┌──────────┐  │  │
-│   │  │  NLP Core   │   │  CDSS Engine     │   │ FHIR R4  │  │  │
-│   │  │  Claude     │   │  ┌────────────┐  │   │ Mapper   │  │  │
-│   │  │  Sonnet     │   │  │ RxNorm API │  │   │          │  │  │
-│   │  │  Streaming  │   │  │ Crit. Val  │  │   │ Bundle   │  │  │
-│   │  │  JSON parse │   │  │ LLM ctx    │  │   │ FHIR R4  │  │  │
+│   │  │  Núcleo NLP │   │  Motor CDSS      │   │ Mapper   │  │  │
+│   │  │  Claude     │   │  ┌────────────┐  │   │ FHIR R4  │  │  │
+│   │  │  Sonnet     │   │  │ API RxNorm │  │   │          │  │  │
+│   │  │  Streaming  │   │  │ Val. Crít. │  │   │ Bundle   │  │  │
+│   │  │  Parseo JSON│   │  │ Contx. LLM │  │   │ FHIR R4  │  │  │
 │   │  └──────┬──────┘   │  └────────────┘  │   └────┬─────┘  │  │
 │   │         │           └────────┬─────────┘        │        │  │
 │   │         └────────────────────┴──────────────────┘        │  │
 │   │                              │ SSE stream                 │  │
 │   │                              ▼                            │  │
-│   │               Background: Evidence Layer                  │  │
+│   │               Búsqueda Evidencia (Background)             │  │
 │   │               PubMed E-utilities + Cochrane               │  │
-│   │               24h cache in Supabase                       │  │
+│   │               Caché 24h en Supabase                       │  │
 │   └──────────────────┬───────────────────┬────────────────────┘  │
 │                       │                   │                        │
 │              ┌────────▼──────┐   ┌────────▼────────┐             │
 │              │   Supabase    │   │  Redis/Upstash   │             │
 │              │  PostgreSQL   │   │  Rate limiting   │             │
 │              │  + RLS + Auth │   │  (slowapi)       │             │
-│              │  14 policies  │   │  per-plan limits │             │
+│              │  14 políticas │   │  límites x plan  │             │
 │              └───────────────┘   └─────────────────┘             │
 └─────────────────────────────────────────────────────────────────┘
 
-External APIs
-├── Anthropic Claude Sonnet  (NLP extraction + CDSS contextual reasoning)
-├── RxNorm / NLM             (drug interaction lookup)
-├── PubMed E-utilities       (evidence retrieval)
-├── Cochrane Library         (systematic review search)
-└── Stripe                   (subscription billing)
+APIs Externas
+├── Anthropic Claude Sonnet  (Extracción NLP + razonamiento CDSS)
+├── RxNorm / NLM             (Búsqueda de interacciones de medicamentos)
+├── PubMed E-utilities       (Búsqueda de artículos científicos médicos)
+├── Biblioteca Cochrane      (Búsqueda de reseñas sistémicas)
+└── Stripe                   (Suscripciones y pasarela de cobros)
 ```
 
 ```mermaid
 sequenceDiagram
-    participant P as Physician
-    participant FE as Next.js Frontend
-    participant BE as FastAPI Backend
+    participant P as Médico
+    participant FE as Frontend (Next.js)
+    participant BE as Backend (FastAPI)
     participant C as Claude Sonnet
     participant DB as Supabase
     participant R as Redis
 
-    P->>FE: Paste clinical note (Spanish)
+    P->>FE: Pega nota clínica (en español)
     FE->>BE: POST /analyze (JWT)
-    BE->>R: Check rate limit (plan-based)
-    BE->>DB: Create case record
+    BE->>R: Revisa cuota según plan
+    BE->>DB: Guarda registro 'case'
     BE-->>FE: SSE: "Detectando tipo de nota..."
-    BE->>C: Stream NLP prompt
-    C-->>BE: JSON stream (entities + SOAP)
-    BE-->>FE: SSE: entities event
-    BE-->>FE: SSE: soap event
-    BE->>BE: Run CDSS (3 parallel modules)
-    BE-->>FE: SSE: alerts event
-    BE->>BE: Generate FHIR R4 Bundle
-    BE-->>FE: SSE: fhir event
-    BE->>DB: Save case + alerts
-    BE-->>FE: SSE: complete event
-    BE->>DB: Background evidence fetch (async)
-    BE-->>FE: SSE: evidence event (delayed)
+    BE->>C: Prompt Stream de NLP
+    C-->>BE: Stream JSON (entidades + SOAP)
+    BE-->>FE: SSE: Evento de entidades
+    BE-->>FE: SSE: Evento de SOAP
+    BE->>BE: Ejecuta CDSS (3 módulos en paralelo)
+    BE-->>FE: SSE: Evento de alertas
+    BE->>BE: Genera FHIR R4 Bundle
+    BE-->>FE: SSE: Evento FHIR R4
+    BE->>DB: Persiste casos + alertas en DB
+    BE-->>FE: SSE: Evento completado
+    BE->>DB: Consulta evidencia científica en fondo (async)
+    BE-->>FE: SSE: Evento de evidencia (diferido)
 ```
 
 ---
 
-## Tech Stack
+## Tecnologías
 
-| Layer | Technology | Purpose |
+| Capa | Tecnología | Objetivo |
 |-------|-----------|---------|
-| Frontend | Next.js 15 + App Router | React SSR, route protection |
-| UI | Tailwind CSS + shadcn/ui | Design system (Navy/Teal palette) |
-| Auth | Supabase Auth + TOTP MFA | Multi-tenant auth with MFA |
-| Backend | FastAPI + Python 3.11 | Async API, SSE streaming |
-| AI | Anthropic Claude Sonnet | NLP extraction + CDSS reasoning |
-| Database | Supabase PostgreSQL + RLS | Multi-tenant data isolation |
-| Cache | Redis / Upstash | Rate limiting + evidence cache |
-| Billing | Stripe | Subscription management |
-| Drug DB | RxNorm / NLM API | Drug interaction lookup |
-| Evidence | PubMed + Cochrane | Clinical evidence retrieval |
-| Frontend Deploy | Vercel | Edge-optimized Next.js hosting |
-| Backend Deploy | Railway | Containerized FastAPI hosting |
-| CI/CD | GitHub Actions | pytest + tsc + deploy pipeline |
-| Standard | FHIR R4 / HL7 | Interoperability bundle output |
+| Frontend | Next.js 15 + App Router | Renderizado SSR en React, protección de rutas |
+| Interfaz UI | Tailwind CSS + shadcn/ui | Sistema visual (Paleta "Navy/Teal") |
+| Autenticación | Supabase Auth + TOTP MFA | Autenticación multi-tenant y 2FA/MFA |
+| Backend | FastAPI + Python 3.11 | API Asíncrona, streaming mediante SSE |
+| IA | Anthropic Claude Sonnet | Extracción NLP + procesamiento de análisis CDSS |
+| Base de Datos | Supabase PostgreSQL + RLS | Aislamiento de información mediante permisos SQL explícitos |
+| Caché Memoria | Redis / Upstash | Controlador de Límite (Rate limiting) y recursos Cacheados |
+| Cobranza / Pagos | Stripe | Administración de subscripciones a plataforma |
+| Base Medicación | API NLM RxNorm | Revisión de interacción cruzada de fármacos o medicinas |
+| Buscador Documental | PubMed + Cochrane | Extracción de Literatura, guías y avances |
+| Despliegue Web | Vercel | Hosting de despliegue sobre Edge Net para Next.js |
+| Despliegue Back | Railway | Framework para contenedor de Backend API |
+| CI/CD Pipeline | Acciones GitHub | Automatizador con pytest, tsc y push hacia servidores |
+| Interoperabilidad | Estandard de HL7 FHIR (R4) | Entregable encriptado formato FHIR listos a acoplar EHRs |
 
 ---
 
-## Quick Start
+## Inicio Rápido (Quick Start)
 
-**Prerequisites:** Docker, Docker Compose, and API keys for Anthropic and Supabase.
+**Requisitos previos:** Necesitarás instalado Docker, Docker Compose, Claves API funcionales en Anthropic, Supabase y un GitHub Pat a mano.
 
-### 1. Clone and configure
+### 1. Clonar el repositorio y arrancar
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/clinote.git
+git clone https://github.com/MI_USUARIO/clinote.git
 cd clinote
 cp .env.example .env
 ```
 
-Edit `.env` with your credentials:
+Edita `.env` con las credenciales necesarias:
 
 ```env
 # Anthropic
 ANTHROPIC_API_KEY=sk-ant-...
 
 # Supabase
-SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_URL=https://tu-proyecto.supabase.co
 SUPABASE_ANON_KEY=eyJ...
 SUPABASE_SERVICE_ROLE_KEY=eyJ...
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 
-# Redis (docker-compose provides local Redis automatically)
+# Redis (Las instrucciones en docker-compose levantarán contenedores dependientes en Local automáticamente)
 REDIS_URL=redis://redis:6379
 
-# Stripe (optional for local dev)
+# Stripe (Opcional si solo quieres ver la aplicación local/pruebas gratuitas)
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_PRO_PRICE_ID=price_...
 STRIPE_CLINIC_PRICE_ID=price_...
 
-# PubMed (optional — improves rate limits)
+# PubMed (Opcional - previene error "Límite Excedido -Rate Limits")
 PUBMED_API_KEY=...
 ```
 
-### 2. Set up Supabase schema
+### 2. Sincroniza y Carga Esqueletos para Base de Datos Supabase
 
 ```bash
-# Install Supabase CLI: https://supabase.com/docs/guides/cli
-supabase link --project-ref YOUR_PROJECT_REF
+# ¡Instala la Utilidad de Líneas CLI (Comandos) de Supabase! -> https://supabase.com/docs/guides/cli
+supabase link --project-ref EL_HASH_DEL_PROYECTO_TU_PROYECTO
 supabase db push
 ```
 
-### 3. Start the stack
+### 3. Levantar la pila de desarrollo por Contenedores Docker
 
 ```bash
 docker compose up --build
 ```
 
-| Service | URL |
+| Servicio | URL |
 |---------|-----|
-| Frontend | http://localhost:3000 |
-| Backend API | http://localhost:8000 |
-| Swagger UI | http://localhost:8000/docs |
+| Módulo Front (Interfaz) | http://localhost:3000 |
+| Módulo Backend (Servidor API) | http://localhost:8000 |
+| Interfaz API de Prueba Swagger | http://localhost:8000/docs |
 | ReDoc | http://localhost:8000/redoc |
 
 ---
 
-## API Reference
+## Referencia de API Principal
 
-### Core Endpoint
+### Endpoint Clave
 
 ```
 POST /api/v1/analyze
@@ -224,59 +224,59 @@ Authorization: Bearer <supabase-jwt>
 Content-Type: application/json
 
 {
-  "note_text": "Paciente masculino de 65 años con HTA y DM2..."
+  "note_text": "Paciente masculino de 65 años con HTA y DM2. Refiere molestia y dolor punzante transcurrida su ingesta de analgésico."
 }
 ```
 
-**Response:** `text/event-stream` (SSE)
+**Respuesta:** Datos Servidos por el API Server (`text/event-stream` (SSE)) en streaming.
 
-| Event | Payload | Description |
+| Evento de Llegada | Payload JSON de Contenido | Propósito |
 |-------|---------|-------------|
-| `status` | `{ stage: string }` | Processing stage updates |
-| `note_type` | `{ note_type: string }` | Detected note category |
-| `entities` | `{ diagnoses, medications, labs, ... }` | Extracted clinical entities |
-| `soap` | `{ subjective, objective, assessment, plan }` | Structured SOAP note |
-| `alerts` | `Alert[]` | CDSS decision-support alerts |
-| `fhir` | `FHIR Bundle` | HL7 FHIR R4 resource bundle |
-| `complete` | `{ case_id, processing_ms }` | Stream end marker |
-| `evidence` | `Evidence[]` | PubMed/Cochrane results (async) |
+| `status` | `{ stage: string }` | Estado actual cargando (Update Progreso). |
+| `note_type` | `{ note_type: string }` | Categoría identificada mediante análisis de tipo de nota. |
+| `entities` | `{ diagnoses, medications, labs, ... }` | Recopilación detectada y extraída. |
+| `soap` | `{ subjective, objective, assessment, plan }` | Información Estructurada (Esquemas de evaluación S-O-A-P) generados del reporte dictado. |
+| `alerts` | `Alert[]` | Contiene información importante desde CDSS (Motor Decisiones de Apoyo). |
+| `fhir` | `Contenido Estructura FHIR` | El Recurso agrupado interoperacional de la nota como dictan las leyes de HL7. |
+| `complete` | `{ case_id, processing_ms }` | Notificador de Término / Límite Cierre. |
+| `evidence` | `Evidencias[]` | Repositorio asincrónico cargado con contenido Médico. |
 
-### Other Endpoints
+### Otros Endpoints Menores:
 
 ```
-GET  /health                          Health check
-GET  /api/v1/cases                    List user cases (paginated)
-GET  /api/v1/cases/{id}               Get case detail
-POST /api/v1/billing/checkout         Create Stripe checkout session
-POST /api/v1/billing/portal           Open Stripe customer portal
-POST /api/v1/billing/webhook          Stripe webhook receiver (HMAC verified)
+GET  /health                          Chequeo en estado del server
+GET  /api/v1/cases                    Lista los Casos / Registros Históricos Atendidos y Procesados del doctor (Permite Navegación).
+GET  /api/v1/cases/{id}               Detalles internos desde base de los Registros Históricos Clínicos.
+POST /api/v1/billing/checkout         Genera o lanza conexión hacia procesador checkout vía STRIPE
+POST /api/v1/billing/portal           Maneja redirección para acceder al Menú del Stripe Portal y gestionar membresías
+POST /api/v1/billing/webhook          Procesador receptor y validador de subscripciones
 ```
 
 ---
 
-## Screenshots
+## Capturas de Pantalla (Screenshots)
 
-> Add screenshots to `docs/screenshots/` and uncomment the section below.
+> Añade tus capturas de pantalla a la ruta `docs/screenshots/` y descomenta esta sección.
 
 <!--
-### Editor — Clinical Note Input
+### El Redactor / Editor de Texto - Interfaz Natural
 ![Editor](docs/screenshots/editor.png)
 
-### Results — Structured Output with Alerts
+### Las Alertas a La Toma de Decisiones
 ![Results](docs/screenshots/results.png)
 
-### CDSS Alerts — Critical Findings with Two-Step Confirmation
+### Alertas Críticas (Motor CDSS) - Validación a Confirmación 2 Fases (Two-Step Confirmation)
 ![Alerts](docs/screenshots/alerts.png)
 
-### FHIR Bundle — Export Tab
+### Exportando a Configuración y Arquitectura Estándar: Archivos FHIR Bundle
 ![FHIR](docs/screenshots/fhir.png)
 -->
 
 ---
 
-## Running Tests
+## Para Comprobar la Correcta Compilación (Running Tests)
 
-### Unit Tests (no API key required — fully mocked)
+### Pruebas Unitarias Core del Negocio (Sin llaves de pago o dependencias externas)
 
 ```bash
 cd backend
@@ -284,22 +284,22 @@ pip install -r requirements.txt
 PYTHONPATH=. pytest tests/ -v --ignore=tests/e2e
 ```
 
-**27/27 tests passing** across 4 test files:
+**27/27 Tests pasando su análisis** a través de 4 archivos vitales de testeo y debug geo local.
 
-| File | Tests | Coverage |
+| Categorías De Testeos | Chequeos | Cobertura |
 |------|-------|---------|
-| `test_cdss_engine.py` | 9 | Critical value thresholds, parse logic |
-| `test_fhir_mapper.py` | 8 | Bundle structure, negation, historical, UUIDs |
-| `test_interactions.py` | 4 | Mocked RxNorm, deduplication, sorting |
-| `test_nlp_core.py` | 2 | Mocked Claude streaming, negation detection |
+| `test_cdss_engine.py` | 9 | Motores de búsqueda de Umbrales Críticos, Lógica Parser de Números. |
+| `test_fhir_mapper.py` | 8 | Validando formatos y negaciones semánticas, recursos lógicos históricos de UUID Bundle. |
+| `test_interactions.py` | 4 | Simulador Falsificación Controlada a API RxNorm (Mocks), re-acondicionante y de orden de purificación. |
+| `test_nlp_core.py` | 2 | Simulador Mock Claude Stream y de negación NLP. |
 
-### E2E Tests (requires running server)
+### Pruebas E2E / De Extremo a Extremo (Requieren tener la API prendida, servidor disponible localhost:8000)
 
 ```bash
 CLINOTE_E2E=true CLINOTE_TEST_URL=http://localhost:8000 pytest tests/e2e/ -v
 ```
 
-### Frontend Type Check
+### Verificación Frontend Tyescript
 
 ```bash
 cd frontend && npm install && npm run type-check
@@ -307,34 +307,34 @@ cd frontend && npm install && npm run type-check
 
 ---
 
-## Deployment
+## Poniendo en Producción (Estrategias de Deploy)
 
-### Backend → Railway
+### 1- Aplicación Servidor a Railway
 
-1. Connect your GitHub repository in the [Railway](https://railway.app/) dashboard
-2. Set all environment variables from `.env.example`
-3. Railway auto-deploys on push to `main` via `railway.toml`
-4. Health check: `GET /health`
+1. Crea / Sincroniza este proyecto Git frente a tus instancias Servidores usando el panel central de Dashboard de  [Railway](https://railway.app/).
+2. Sube variables ENV que pide la base guiada `.env.example`.
+3. Todos tus lanzamientos desde consola GitHub automáticamente se despacharán a despliegue Railway si existe empuje a `Main` gracias al archivo base `railway.toml`.
+4. El Estado de validación final debe corroborar con un `GET /health` como éxito a terminal.
 
-### Frontend → Vercel
+### 2- Despliegue Frontend a Vercel
 
-1. Import the repository in [Vercel](https://vercel.com/), set root directory to `frontend/`
-2. Set all `NEXT_PUBLIC_*` and server-side environment variables
-3. Vercel auto-deploys on push to `main` via `vercel.json`
+1. Usa la UI principal al Panel App en [Vercel](https://vercel.com/) buscando este repositorio importado base para sincronizarlos; establece `/frontend/` como su Raíz Root.
+2. Agrega en sus panel Vercel cada Entorno Público Ambiental y ServerSide Secrets de Variables desde base `NEXT_PUBLIC_*`.
+3. Sincronización se detecta automáticamente (auto-deploys) en push. Utilidades Vercel se leen de `vercel.json`.
 
-### Stripe Webhooks
+### Pagos a Suscripciones vía Stripe Webhooks (Servicios Configuración Seguros Ocultos)
 
 ```bash
-# Register in the Stripe dashboard:
-https://your-backend.railway.app/api/v1/billing/webhook
+# Registra Endpoints URL desde la terminal Panel en tu app de Subscripciones Stripe (Webhooks URL) usando: 
+https://tuservidor-api-a-elegir.railway.app/api/v1/billing/webhook
 
-# Copy the signing secret to your environment:
+# Al Terminar Copia la Llave Creada del Proceso Oculto hacia ti Configuración de Variables Global:
 STRIPE_WEBHOOK_SECRET=whsec_...
 ```
 
-### CI/CD (GitHub Actions)
+### GitHub Automator "Pipelines CI / CD Acciones Remotas Automatizadas"
 
-Add these secrets to your GitHub repository settings:
+Incluye de favor en repositorios "Github Secets":
 
 ```
 RAILWAY_TOKEN
@@ -346,145 +346,145 @@ SUPABASE_URL
 SUPABASE_SERVICE_ROLE_KEY
 ```
 
-The pipeline runs `pytest` + `tsc` + `next build` on every push and PR, then deploys in parallel to Railway and Vercel on merge to `main`.
+El proyecto de repositorios está amparado de Pipelines. Al generar tu primer PR / Empuje Branch, probará y compilará mediante "Next / Pytest", despachándose con rapidez automática hacia Railway y Vercel en Main.
 
 ---
 
-## Project Structure
+## Árbol y Mapa Estructurado del Proyecto
 
 ```
 clinote/
 ├── backend/
 │   ├── app/
-│   │   ├── routers/        # analyze, cases, billing
-│   │   ├── services/       # nlp_core, cdss_engine, fhir_mapper,
-│   │   │                   # evidence_layer, audit_service
-│   │   ├── middleware/     # auth, rate_limiter
-│   │   ├── models/         # request, response, internal
-│   │   └── utils/          # crypto, validators, sanitizer
-│   ├── prompts/            # NLP system + user prompts
-│   ├── tests/              # 27 unit tests + 8 E2E tests
-│   └── Dockerfile          # Multi-stage python:3.11-slim, non-root user
+│   │   ├── routers/        # Entradas (endpoints): analyze, cases, billing
+│   │   ├── services/       # nlp_core, cdss_engine, fhir_mapper, evidence_layer, audit_service
+│   │   ├── middleware/     # Auth JWT y rate_limiter (Control flujos límite de red)
+│   │   ├── models/         # Pydantic schemas Request, Responses
+│   │   └── utils/          # Utilidades para encriptación de reportes RGPD o saneamiento de basura regex
+│   ├── prompts/            # Instrucciones al motor LLM y de NLP
+│   ├── tests/              # 27 Base Test Scripts Unitarios y 8 End tests integrales E2E
+│   └── Dockerfile          # Imagen Multi-Nivel Basada de Python liviano
 ├── frontend/
 │   ├── app/
 │   │   ├── (dashboard)/
-│   │   │   ├── editor/     # Note input + SSE progress stages
-│   │   │   ├── cases/      # Case list + detail view
-│   │   │   └── billing/    # Plan management + usage meter
-│   │   ├── (auth)/         # Login + TOTP MFA flow
-│   │   └── (landing)/      # Public marketing page
-│   ├── components/         # UI components (shadcn + custom)
-│   ├── lib/supabase/       # Typed Supabase clients (browser/server/admin)
-│   └── Dockerfile          # Multi-stage node:20-alpine, non-root user
+│   │   │   ├── editor/     # Ingreso/editor principal Streaming Proceso Notificaciones de avance
+│   │   │   ├── cases/      # Detalle visualizador Base Pacientes Historíales
+│   │   │   └── billing/    # Interfaz Suscriptor Facturación Consola
+│   │   ├── (auth)/         # Interfaz de Ingreso login + Autenticación doble Check (MFA)
+│   │   └── (landing)/      # Home (Desembarco Front Principal Venta Landing comercial pública)
+│   ├── components/         # Módulos Interfaz UI components Modos Radix con Tailwind integrados y shadcn/ui
+│   ├── lib/supabase/       # TypeScript configurado de esquemas Database y base auth central cliente.
+│   └── Dockerfile          # Base Construcción Local o externa para contenedores node (alpine) 
 ├── supabase/
-│   ├── migrations/         # 7 tables, 8 indexes, 14 RLS policies
-│   └── seed.sql            # 3 users, 5 clinical cases, 7 alerts
+│   ├── migrations/         # Actualizaciones de BD relacionales. (7 Tablas, Índices y Políticas).
+│   └── seed.sql            # Demo Mock. Test para 3 Clientes Cuentas Mocks, Notas clínicas y datos de pruebas previas.
 ├── scripts/
-│   └── setup_stripe.py     # Creates Stripe products + prices
-├── .github/workflows/      # CI (test) + CD (deploy) pipelines
-├── docker-compose.yml
-├── ARCHITECTURE.md
-├── RGPD.md
-├── DISCLAIMER.md
-└── BUILD_REPORT.md
+│   └── setup_stripe.py     # Creador y Ejecutor automatizado a pasarela Precios Stripe
+├── .github/workflows/      # Pruebas Autenticables Continúas de Entornos Tests en Automación Despliegues. (Acciones GitHub)
+├── docker-compose.yml      # Módulo Config para correr en Red local Todo Con docker (front back db y sub cache servers redis)
+├── ARCHITECTURE.md         # Manual Arquitectura y Mantenibilidad.
+├── RGPD.md                 # Documento Regulatorio Complience Seguridad al Privado
+├── DISCLAIMER.md           # Exención Responsabilidades Clinicas.
+└── BUILD_REPORT.md         # Notas Compilación. Reporte de Estados.
 ```
 
 ---
 
-## Clinical Entities Extracted
+## Listado Específico de las Categorías Detectables de Extracción (Entidades Clínicas)
 
-The NLP pipeline identifies and structures 8 entity categories from unstructured Spanish clinical text:
+Los motores o canalización NLP resuelven desde descripciones a una estructura estricta clasificada según 8 puntos para un habla hispanohablante pura:
 
-| Category | Examples |
+| Área/Categoría Identificada | Descripción de Datos Detectados |
 |----------|---------|
-| Diagnoses | HTA, DM2, EPOC, IAM — with negation detection |
-| Medications | Drug name, dose, route, frequency — normalized via RxNorm |
-| Allergies | Drug/substance, reaction type, severity |
-| Lab Values | Hemoglobina 8.2 g/dL, Potasio 6.1 mEq/L |
-| Vital Signs | TA 180/100, FC 45 lpm, SpO2 88% |
-| Symptoms | Disnea, dolor precordial, mareo |
-| Procedures | ECG, RX tórax, ecocardiograma |
-| Family History | Padre con cardiopatía isquémica |
+| Enfermedades "Diag." | HTA, DM2, EPOC, IAM — Incorpora detector frente a negaciones y sospechas |
+| Medicamentos | Nombres Fármaco Genérico, Ruta de dosis y dosis continua vía normalización de código desde US RxNorm API |
+| Alergias Médicas | Excipientes alérgicos de gravedad notada o Reacciones colaterales |
+| Exámenes Clínicos/Laboratorio | Hemoglobina 8.2 g/dL, Potasio 6.1 mEq/L (Interpretaciones Umbral Automáticos). |
+| Signos Periféricos y Constantes | Mediciones TA, FC (Pulsos) o SpO2 |
+| Signos/Sintomatología Subjetiva| Disnea detectada, Dolores a nivel Precordial y descripción cualitativa del dolor reportado (Examen Local Físico generalizados) |
+| Antecedentes Examen/Procedimientos | Presencia Rayo-X de tórax y Procedimientos programados EC, etc. |
+| Historia Médica Herencia Familiar| Carga Patológica Padres "Hipertensión isquémica/Alergias heredadas..." |
 
 ---
 
-## CDSS Decision-Support Modules
+## Módulos y Alertas Integrales CDSS (Para Diagnósticos Integrales Informados)
 
-Three parallel modules run after entity extraction:
+Se operan motores de inteligencia que toman decisión luego y subsecuentemente una vez logrados y decodificadas las entidades previamente.
 
-1. **Drug Interaction Checker** — Queries the NLM RxNorm interaction API for all extracted medications; deduplicates and sorts by severity
-2. **Critical Value Rules Engine** — 35+ threshold rules for lab values and vital signs (e.g., K⁺ > 6.0 mEq/L, SpO₂ < 90%, Hb < 7.0 g/dL)
-3. **LLM Contextual Reasoning** — Triggers when the note contains 2+ diagnoses or 3+ medications; uses Claude to identify nuanced clinical risks not captured by rule-based logic
-
----
-
-## Security and Compliance
-
-- **Authentication:** Supabase JWT on every protected route, TOTP MFA available
-- **Authorization:** PostgreSQL RLS enforced at the database level — users access only their organization's data
-- **Input Sanitization:** Prompt injection protection via regex sanitizer, preserving clinical text patterns (drug doses, lab values, Spanish abbreviations)
-- **Audit Logging:** Every analyze action logged with user ID, IP, user-agent, and note hash — never raw note content
-- **No Hardcoded Secrets:** Verified clean in security audit — all credentials via environment variables
-- **CORS:** Restricted to configured origins
-- **RGPD/GDPR:** Full compliance documentation in [`RGPD.md`](./RGPD.md)
+1. **Test y Corroborador Cruz de Interacción Droga Fármaco** — Dispara llamados e interrogaciones frente a interfaces como NLM (USA) o Sistema de Drogas estandarizado de la Organización Central por medio de datos y reportes base; eliminando repeticiones innecesarias con avisador categorizado en Urgencia de Reacción Peligro.
+2. **Sistema Comprobador por Medidas / "Límites Umbral Crítico Lab"** — Interroga parámetros biológicos sobre las 35 evaluaciones métricas en las listas o medidas universales que activaran un aviso urgente. (Ej., K⁺ > 6.0 mEq/L, SpO₂ < 90%). 
+3. **Módulo LLM Preventivo al Diagnóstico** — Su gatillo activa análisis siempre que en nota concurran desde 2+ males diagnosticados en acompañante o más (+) de 3 dosis/fármacos activos. Claude evalúa todo un abanico preventivo y advierte de riesgos posibles de descompensaciones clínicas.
 
 ---
 
-## Medical Disclaimer
+## Componente Regulador — Seguridad Médica Clínica Avanzada 
 
-CLINOTE is a **clinical decision support tool**, not a certified medical device. All output requires physician review and independent clinical judgment. See [`DISCLAIMER.md`](./DISCLAIMER.md) for the full bilingual disclaimer.
+- **Autenticabilidad Cuentos:** Supabase JWT. Cada intento hacia APIs Protegidos está resguardado ante robos informáticos (MFA). 
+- **Autorización Segmentada Multi Cliente:** Base del Relacionado PostgreSQL permite separar lógicamente registros clínicos por RLS Privacidad desde los sub usuarios, restringido para las organizaciones u hospitales de origen. 
+- **Proceso de Prevención / Sanitización y Defensa Inyecciones Malintencionadas o Robos (Prompt Hacking Protection):** Filtros a capa base de API que suprimen Prompts "Engañadores" (Instrucción Inyectada Malintencionada al Contexto de Texto para extracción local). Filtra o censura dejando contenido verificado médico limpio de manipuladores no médicos. (Soporte sobre Acronismos a lengua español garantizado)
+- **Cumplimientos y Hashing Auditoría de Accesos Log Logs:** Cada intento o entrada en Análisis Clínico Registra Su procedencia (quien lo envía, Dirección IPv4 Origen Cliente), Hash y no deja copia visible a los empleados bases del sitio de lo que escribió el personal Clínico frente a servidores (Base 0 Privacidad / No Raw Content PII Visible)
+- **Cross Origin y Autorizaciones Request Headers Web Control:** Endpoints Asegurados de su Llamado Desde IPs permitidos originarios Web Browser app origin
+- **Regulación Plena Complimentada GDPR / LOPD Ley Datos Confidenciales RGPD Privacidades Europeas/Latinas** Revisa completo Documento PDF Guía para Compliments Oficial a Documento:  [`RGPD.md`](./RGPD.md). 
 
 ---
 
-## Contributing
+## Cláusulas Generales Clínicas (Medical Disclaimer - Importante Recordatorio Legal)
 
-Contributions are welcome.
+El Programa u Operativa a Software llamado **CLINOTE NO FUNCIONA**, NO SUSTITUYE Y NUNCA SERÁ un Dispositivo Oficial de Evaluación Final Clínico (No es Instrumental Oficialmente Aprobado o Certificado); Es Exclusivamente Considerada **Una Herramienta O De Consulta Inteligente y Acompañante Ayuda Para Decisiones (Apoyador de decisiones)**; la toma decisional final que deriva o provenga hacia los tratamientos de Usuarios en Hospital Clínico se dictaminará al estricto entendimiento, peritaje formal a Criterio a cargo directo a cada Facultativo Prescriptor Asignado e Instructor Independiente sobre los tratamientos y veredicto definitivo. Consecuencialidades no deriven al servidor.
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature`
-3. Run the test suite: `cd backend && PYTHONPATH=. pytest tests/ --ignore=tests/e2e`
-4. Open a pull request against `main`
+Favor Ver Cláusula de Limitación Extensión a [`DISCLAIMER.md`](./DISCLAIMER.md) para acceder Legal Internacional Dual-idioma oficial.
 
-See [`BUILD_REPORT.md`](./BUILD_REPORT.md) for known issues and the prioritized development roadmap.
+---
+
+## Contribuciones Código e ideas 
+
+Contribuciones de Open Source están bienvenidas, puedes participar siguiendo guías colaborativos: 
+
+1. Construye el Repositorio de trabajo clonando la aplicación base central Fork.
+2. Añade Código o Branch Específicos: `git checkout -b feature/nombra-el-titulo-del-feature`
+3. Analiza Pruebas Obligatoriamente: `cd backend && PYTHONPATH=. pytest tests/ --ignore=tests/e2e` para comprobar validez de sintaxis a producción no disruptiva.
+4. Genera (PR Pull request) Al branch Central ("Main") luego de todo Test Comprobatorio para una aceptación Integración final de nuestra parte al Source principal.
+
+Cita siempre la hoja log reportes para prevenir esfuerzos redundantes sobre fallas identificables ya corregidos local en base central: Consultar Log Histórico:   [`BUILD_REPORT.md`](./BUILD_REPORT.md) o Ver Priorización (Lista Pendientes Desarrolladores de Comunidad de Soporte de Ruta/Roadmap Proyectos Oficiales) 
 
 ---
 
 ## Roadmap
 
-- [ ] PDF export (backend route)
-- [ ] RGPD Art. 20 — User data export endpoint
-- [ ] RGPD Art. 17 — Account deletion endpoint
-- [ ] SNOMED CT code lookup integration
-- [ ] RxNorm Spanish trade name normalization
-- [ ] PubMed full abstract fetch (currently titles only)
-- [ ] Admin dashboard for org management
-- [ ] Email notifications for critical alerts
-- [ ] Load testing and p50/p95 benchmarks
+- [ ] Opción a Rutas De Convertibilidad Output a formato final PDF y Visado Visual e Imprimible (Descargas Finales Imprenta). 
+- [ ] Regla de Aplicación 20 RGPD: Opciones Exportable de API Descargar todos Los Datos Completos Cuentas Personales Archivo export. 
+- [ ] Directiva al Derecho a ser Obviados LOPD / GDPR Capítulo Art 17/ Borrador EndPoint 
+- [ ] Integrador e interoperación de Base Sistema Lenguaje Global Nomencladores - "SNOMED CT".
+- [ ] Normalizador Lenguas Hispano-Latino / Marca Comercial e industrial del remedio-Farmacéutico Base Integración. 
+- [ ] Recuperador Integro De Textos Bibliotecarios "Abstract Text" hacia Pubmed y librerías científicas directas no solo encabezados limitantes predeterminados a resumen 1 nivel inicial "Title Headers abstracts")
+- [ ] Vista Control panel del Master Manager Administración Organizadores de Clínicas (Dash Control Admins / Users Panel Roles Config / Metrics usage tracking admin/manager). 
+- [ ] Módulos Mail Alert API Notificaciones "Smtp/Resend". Correos Push Informes Alertables Clínicos Directos vía Cuentas Registros Doctor Urgencia o Resúmenes a bandeja "Recibido de Mailbox" al Generar Un CDSS Alertas Roja Criterios Altos. 
+- [ ] Informes a Load Testing Rendimiento y Reportar Rendimiento Escalado a nivel Estadísticos Percentiles de P50/ P95.
 
 ---
 
-## Built With
+## Lista Herramientas Creadoras Tech (Built With)
 
-- [Anthropic Claude](https://www.anthropic.com/) — LLM for NLP extraction and CDSS reasoning
-- [FastAPI](https://fastapi.tiangolo.com/) — Async Python web framework with SSE support
-- [Next.js](https://nextjs.org/) — React framework with App Router and SSR
-- [Supabase](https://supabase.com/) — PostgreSQL, Auth, and Row-Level Security
-- [shadcn/ui](https://ui.shadcn.com/) — Accessible, composable UI components
-- [Redis / Upstash](https://upstash.com/) — Serverless Redis for rate limiting and caching
-- [Stripe](https://stripe.com/) — Subscription billing and customer portal
-- [RxNorm / NLM](https://www.nlm.nih.gov/research/umls/rxnorm/) — Drug normalization and interaction data
-- [PubMed E-utilities](https://www.ncbi.nlm.nih.gov/home/develop/api/) — Medical literature API
-- [Railway](https://railway.app/) — Backend deployment and hosting
-- [Vercel](https://vercel.com/) — Frontend deployment and edge network
+- [Anthropic Claude](https://www.anthropic.com/) — Modelo Inteligencia para NLP base y evaluación soporte Clínico 
+- [FastAPI](https://fastapi.tiangolo.com/) — Concurrencia de Conector API Base con Streaming SSE Operacional En Python asíncrono
+- [Next.js](https://nextjs.org/) — Marco React con funciones Edge (Router Avanzado SSR UI components).
+- [Supabase](https://supabase.com/) — Database en formato Postgres , Aislantes por Filas, Control Autenticadores Cuentas Central API .
+- [shadcn/ui](https://ui.shadcn.com/) — Colecciones Visual UI/UX, Accesibilidades y Controles a nivel Interfaces Diseñadas (Vistas Interfaz Modos Components Adaptativas React)
+- [Redis / Upstash](https://upstash.com/) — Distribuidor ServerLess de Velocidades, Manejador e Integracion límites rateo red / Memorizador Caché
+- [Stripe](https://stripe.com/) — Encargado al manejo Administrativo Cuotas Plan e Ingresos Ventas del Saas Comercial Portal Usuarios Consumo (Billings y Recurrente de pagos y Tarjetas de débito Inversiones Transacciones Stripe Portal Dashboard) 
+- [RxNorm / NLM](https://www.nlm.nih.gov/research/umls/rxnorm/) — Baza NLM Consultador a interacción a Dosis/Farmacología
+- [PubMed E-utilities](https://www.ncbi.nlm.nih.gov/home/develop/api/) — Recogedor E-Utilites Librería Nacional Estadounidense al Articulo médico PDF Papers Investigación. 
+- [Railway](https://railway.app/) — Creador o Host App (Servidor Encriptado) Para Aplicativos de Python Módulos Backends API Container Hosting Service (Despliegues Automacion Git). 
+- [Vercel](https://vercel.com/) — Content Delivery Edge Distribute y compilado Automático Para Aplicativos Web (React Frontend Aplicativo Front Interfaces Visual UI deploy WebHost)
 
 ---
 
-## License
+## Licencia Aplicación 
 
 [MIT](./LICENSE)
 
 ---
 
 <div align="center">
-Built for Spanish-speaking physicians who deserve better tools.
+Hecho y desarrollado pensando desde cero para y hacia la labor de médicos de todo el mundo de idioma Castellano / Español. En retribución a un sistema clínico más avanzado con mejores y justas herramientas. 
 </div>
