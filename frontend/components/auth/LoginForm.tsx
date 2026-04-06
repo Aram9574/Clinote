@@ -70,9 +70,14 @@ export function LoginForm() {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-cream-50/60 mb-1.5">
-            Contraseña
-          </label>
+          <div className="flex items-center justify-between mb-1.5">
+            <label className="block text-xs font-medium text-cream-50/60">
+              Contraseña
+            </label>
+            <Link href="/forgot-password" className="text-xs text-teal-400 hover:text-teal-300 transition-colors">
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
           <input
             type="password"
             value={password}

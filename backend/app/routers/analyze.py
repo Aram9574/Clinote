@@ -24,7 +24,8 @@ async def generate_analysis_stream(
     user_id: str,
     case_id: str,
     supabase_client,
-    request: Request
+    request: Request,
+    template_id: str = "soap",
 ) -> AsyncGenerator[dict, None]:
     """Main SSE stream generator for clinical note analysis."""
 
@@ -37,7 +38,7 @@ async def generate_analysis_stream(
     yield {"event": "status", "data": json.dumps({"stage": "Detectando tipo de nota...", "case_id": case_id})}
 
     # Stream NLP results
-    async for event in extract_clinical_entities(note_text):
+    async for event in extract_clinical_entities(note_text, template_id):
         section = event.get("section")
 
         if section == "entities":
@@ -97,7 +98,8 @@ async def generate_analysis_stream(
             "model_version": settings.claude_model,
             "soap_structured": soap_data,
             "fhir_bundle": fhir_bundle,
-            "entities": entities_data
+            "entities": entities_data,
+            "template_id": template_id,
         }).eq("id", case_id).execute()
 
         if alert_rows:
@@ -178,8 +180,10 @@ async def analyze_note(
         supabase_client
     )
 
+    template_id = analyze_req.template_id or "soap"
+
     return EventSourceResponse(
-        generate_analysis_stream(clean_note, user_id, case_id, supabase_client, request)
+        generate_analysis_stream(clean_note, user_id, case_id, supabase_client, request, template_id)
     )
 
 

@@ -44,7 +44,7 @@ export function useAnalyze(token: string) {
     setStages(prev => prev.map(s => s.id === stageId ? { ...s, done: true } : s))
   }, [])
 
-  const analyze = useCallback((noteText: string) => {
+  const analyze = useCallback((noteText: string, templateId?: string) => {
     connectionRef.current?.close()
     setState({ ...initialState, isStreaming: true })
     setStages(INITIAL_STAGES.map(s => ({ ...s, done: false })))
@@ -52,7 +52,7 @@ export function useAnalyze(token: string) {
     connectionRef.current = connectSSE(
       '/api/v1/analyze',
       token,
-      { note_text: noteText },
+      { note_text: noteText, template_id: templateId ?? 'soap' },
       (eventType, data) => {
         switch (eventType) {
           case 'status': {

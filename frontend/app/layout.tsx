@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { DM_Sans, DM_Mono } from 'next/font/google'
+import { ToastProvider } from '@/components/shared/Toast'
 import './globals.css'
 
 const dmSans = DM_Sans({
@@ -26,7 +27,9 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${dmSans.variable} ${dmMono.variable}`}>
       <body className="font-sans antialiased">
-        {children}
+        <ToastProvider>
+          {children}
+        </ToastProvider>
       </body>
     </html>
   )

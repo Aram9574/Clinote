@@ -10,6 +10,7 @@ import { CriticalAlertBanner } from '@/components/results/CriticalAlertBanner'
 import { SOAPViewer } from '@/components/results/SOAPViewer'
 import { FHIRExportButton } from '@/components/results/FHIRExportButton'
 import { copySOAPToClipboard } from '@/lib/export'
+import { useToast } from '@/components/shared/Toast'
 import type { ClinicalAlert, SOAPNote } from '@/types/clinical'
 
 export default function CasePage() {
@@ -19,6 +20,7 @@ export default function CasePage() {
   const [token, setToken] = useState<string | null>(null)
   const [criticalDismissed, setCriticalDismissed] = useState(false)
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle')
+  const toast = useToast()
 
   const supabase = createClient()
 
@@ -51,17 +53,20 @@ export default function CasePage() {
     try {
       await updateSOAP(token, caseId, soap)
       setSaveStatus('saved')
+      toast.success('SOAP guardado correctamente')
       setTimeout(() => setSaveStatus('idle'), 2000)
     } catch {
       setSaveStatus('idle')
+      toast.error('Error al guardar. Inténtalo de nuevo.')
     }
-  }, [token, caseId])
+  }, [token, caseId, toast])
 
   const handleCopySOAP = useCallback(async () => {
     if (caseData?.soap_structured) {
       await copySOAPToClipboard(caseData.soap_structured, caseId)
+      toast.success('SOAP copiado al portapapeles')
     }
-  }, [caseData, caseId])
+  }, [caseData, caseId, toast])
 
   if (isLoading) {
     return (

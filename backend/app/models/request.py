@@ -5,6 +5,7 @@ from typing import Optional
 class AnalyzeRequest(BaseModel):
     note_text: str = Field(..., min_length=1, max_length=15000)
     note_type_hint: Optional[str] = Field(None, pattern="^(ambulatory|emergency|discharge|unknown)$")
+    template_id: Optional[str] = Field("soap", max_length=50)
 
     @validator('note_text')
     def validate_word_count(cls, v):
@@ -21,6 +22,9 @@ class AcknowledgeAlertRequest(BaseModel):
 
 
 class UpdateSOAPRequest(BaseModel):
+    # Support any template section keys (SOAP, DAR, PIE, BIRP, etc.)
+    model_config = {"extra": "allow"}
+
     S: Optional[str] = Field(None, max_length=5000)
     O: Optional[str] = Field(None, max_length=5000)
     A: Optional[str] = Field(None, max_length=5000)

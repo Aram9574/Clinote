@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, Zap, Shield, BookOpen } from 'lucide-react'
+import { ROICalculator } from '@/components/landing/ROICalculator'
 
 export default function LandingPage() {
   return (
@@ -70,6 +71,8 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
+
+      <ROICalculator />
 
       {/* Pricing */}
       <section className="max-w-4xl mx-auto px-6 py-16">

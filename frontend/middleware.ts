@@ -29,7 +29,9 @@ export async function middleware(request: NextRequest) {
 
   const isAuthPath = request.nextUrl.pathname.startsWith('/login') ||
                      request.nextUrl.pathname.startsWith('/register') ||
-                     request.nextUrl.pathname.startsWith('/mfa')
+                     request.nextUrl.pathname.startsWith('/mfa') ||
+                     request.nextUrl.pathname.startsWith('/forgot-password') ||
+                     request.nextUrl.pathname.startsWith('/reset-password')
   const isDashboardPath = request.nextUrl.pathname.startsWith('/editor') ||
                           request.nextUrl.pathname.startsWith('/cases') ||
                           request.nextUrl.pathname.startsWith('/settings') ||

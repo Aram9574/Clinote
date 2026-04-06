@@ -2,35 +2,23 @@ import { SOAPNote } from '@/types/clinical'
 import { API_BASE } from './api'
 
 export function formatSOAPAsText(soap: SOAPNote, caseId?: string): string {
+  const separator = '═══════════════════════════════════'
   const lines = [
     `NOTA CLÍNICA ESTRUCTURADA${caseId ? ` [ID: ${caseId}]` : ''}`,
     `Generado por CLINOTE | ${new Date().toLocaleDateString('es-ES')}`,
     '',
-    '═══════════════════════════════════',
-    'S - SUBJETIVO',
-    '═══════════════════════════════════',
-    soap.S || '—',
-    '',
-    '═══════════════════════════════════',
-    'O - OBJETIVO',
-    '═══════════════════════════════════',
-    soap.O || '—',
-    '',
-    '═══════════════════════════════════',
-    'A - DIAGNÓSTICO',
-    '═══════════════════════════════════',
-    soap.A || '—',
-    '',
-    '═══════════════════════════════════',
-    'P - PLAN',
-    '═══════════════════════════════════',
-    soap.P || '—',
-    '',
+  ]
+  for (const [key, value] of Object.entries(soap)) {
+    if (value) {
+      lines.push(separator, key.toUpperCase(), separator, value, '')
+    }
+  }
+  lines.push(
     '---',
     'AVISO LEGAL: Este documento ha sido generado con apoyo de IA. Su contenido',
     'es responsabilidad exclusiva del médico que lo revisa y suscribe.',
     'CLINOTE no constituye un dispositivo médico.',
-  ]
+  )
   return lines.join('\n')
 }
 

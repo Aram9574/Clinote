@@ -65,12 +65,7 @@ export interface ClinicalEntities {
   physical_exam: Record<string, string>
 }
 
-export interface SOAPNote {
-  S: string
-  O: string
-  A: string
-  P: string
-}
+export type SOAPNote = Record<string, string>
 
 export interface ClinicalAlert {
   id?: string
@@ -97,6 +92,7 @@ export interface CaseData {
   fhir_bundle: object | null
   alerts: ClinicalAlert[]
   created_at: string
+  template_id?: string | null
 }
 
 export interface EvidenceItem {

@@ -6,11 +6,12 @@ import anthropic
 
 from app.config import get_settings
 from app.models.internal import NLPResult, ParsedEntities, SOAPNote
-from prompts.nlp_extraction import NLP_SYSTEM_PROMPT, build_nlp_prompt
+from prompts.nlp_extraction import NLP_SYSTEM_PROMPT, build_nlp_prompt, TEMPLATE_SECTION_INSTRUCTIONS
 
 
 async def extract_clinical_entities(
     note_text: str,
+    template_id: str = "soap",
 ) -> AsyncIterator[dict]:
     """
     Stream NLP extraction results via SSE-compatible async generator.
@@ -30,7 +31,7 @@ async def extract_clinical_entities(
         max_tokens=4096,
         system=NLP_SYSTEM_PROMPT,
         messages=[
-            {"role": "user", "content": build_nlp_prompt(note_text)}
+            {"role": "user", "content": build_nlp_prompt(note_text, template_id)}
         ]
     ) as stream:
         yield {"section": "status", "data": {"stage": "Extrayendo entidades clínicas..."}, "done": False}

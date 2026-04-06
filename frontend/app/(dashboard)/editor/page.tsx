@@ -5,8 +5,10 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { NoteEditor } from '@/components/editor/NoteEditor'
 import { ProcessingProgress } from '@/components/editor/ProcessingProgress'
+import { TemplateSelector } from '@/components/editor/TemplateSelector'
 import { useAnalyze } from '@/hooks/useAnalyze'
 import { fetchCases } from '@/lib/api'
+import { DEFAULT_TEMPLATE_ID } from '@/lib/clinical-templates'
 import { Sparkles, CheckCircle } from 'lucide-react'
 
 const EXAMPLE_NOTE =
@@ -82,9 +84,21 @@ function WelcomeToast({ onClose }: { onClose: () => void }) {
   )
 }
 
+// Anonymize obvious patient identifiers (name patterns, DNI, dates of birth)
+function anonymizeNote(text: string): string {
+  return text
+    .replace(/\b(paciente|enferm[oa]|sr\.?|sra\.?|don|doña)\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*/gi, '$1 [NOMBRE]')
+    .replace(/\b\d{8}[A-Z]\b/g, '[DNI]')
+    .replace(/\b(nhc|nº hc|historia[:\s#]+)\s*\d+/gi, '$1 [NHC]')
+    .replace(/\b(tfno?|tel[eé]f?ono?|móvil)[:\s]+[\d\s\-\+]{9,}/gi, '$1 [TELÉFONO]')
+    .replace(/\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b/g, '[EMAIL]')
+}
+
 export default function EditorPage() {
   const [token, setToken] = useState<string | null>(null)
   const [noteText, setNoteText] = useState('')
+  const [anonymize, setAnonymize] = useState(false)
+  const [templateId, setTemplateId] = useState(DEFAULT_TEMPLATE_ID)
   const [hasNoCases, setHasNoCases] = useState(false)
   const [showWelcomeToast, setShowWelcomeToast] = useState(false)
   const router = useRouter()
@@ -121,9 +135,10 @@ export default function EditorPage() {
 
   const handleAnalyze = useCallback(() => {
     if (noteText.trim() && token) {
-      analyze(noteText)
+      const textToSend = anonymize ? anonymizeNote(noteText) : noteText
+      analyze(textToSend, templateId)
     }
-  }, [noteText, token, analyze])
+  }, [noteText, token, analyze, anonymize, templateId])
 
   useEffect(() => {
     if (state.isComplete && state.caseId) {
@@ -157,6 +172,36 @@ export default function EditorPage() {
       {hasNoCases && token && (
         <WelcomeBanner onUseExample={() => setNoteText(EXAMPLE_NOTE)} />
       )}
+
+      {/* Template selector */}
+      <div className="mb-4">
+        <p className="text-xs text-cream-50/40 mb-1.5 font-medium uppercase tracking-wide">
+          Plantilla de nota
+        </p>
+        <TemplateSelector value={templateId} onChange={setTemplateId} />
+      </div>
+
+      {/* Anonymization toggle */}
+      <div className="flex items-center gap-3 mb-4 p-3 bg-navy-800 border border-navy-600 rounded-lg">
+        <button
+          onClick={() => setAnonymize(v => !v)}
+          className={`relative w-9 h-5 rounded-full transition-colors flex-shrink-0 ${
+            anonymize ? 'bg-teal-400' : 'bg-navy-600'
+          }`}
+        >
+          <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
+            anonymize ? 'translate-x-4' : 'translate-x-0'
+          }`} />
+        </button>
+        <div>
+          <p className="text-xs font-medium text-cream-50/80">
+            Anonimizar antes de procesar
+          </p>
+          <p className="text-xs text-cream-50/40">
+            Elimina nombres, DNI, NHC y datos de contacto del texto antes de enviarlo a la IA
+          </p>
+        </div>
+      </div>
 
       <NoteEditor
         value={noteText}

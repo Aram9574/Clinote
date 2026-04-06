@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { SOAPEditor } from './SOAPEditor'
 import { EntityTags } from './EntityTags'
 import { EvidencePanel } from './EvidencePanel'
+import { getTemplate } from '@/lib/clinical-templates'
 import type { CaseData, SOAPNote } from '@/types/clinical'
 
 interface SOAPViewerProps {
@@ -15,24 +16,24 @@ interface SOAPViewerProps {
 
 type TabId = 'soap' | 'entities' | 'fhir' | 'evidence'
 
-const TABS = [
-  { id: 'soap' as TabId, label: 'SOAP' },
-  { id: 'entities' as TabId, label: 'Entidades' },
-  { id: 'fhir' as TabId, label: 'FHIR' },
-  { id: 'evidence' as TabId, label: 'Evidencia' },
-]
-
 export function SOAPViewer({ caseData, token, caseId, onSave }: SOAPViewerProps) {
   const [activeTab, setActiveTab] = useState<TabId>('soap')
   const [editedSoap, setEditedSoap] = useState<SOAPNote>(
-    caseData.soap_structured || { S: '', O: '', A: '', P: '' }
+    caseData.soap_structured || {}
   )
+  const template = getTemplate(caseData.template_id ?? 'soap')
+  const tabs = [
+    { id: 'soap' as TabId, label: template.name },
+    { id: 'entities' as TabId, label: 'Entidades' },
+    { id: 'fhir' as TabId, label: 'FHIR' },
+    { id: 'evidence' as TabId, label: 'Evidencia' },
+  ]
 
   return (
     <div className="flex flex-col h-full">
       {/* Tabs */}
       <div className="flex border-b border-navy-600 px-4">
-        {TABS.map(tab => (
+        {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
@@ -50,7 +51,12 @@ export function SOAPViewer({ caseData, token, caseId, onSave }: SOAPViewerProps)
       {/* Tab content */}
       <div className="flex-1 overflow-y-auto scrollbar-thin p-6">
         {activeTab === 'soap' && (
-          <SOAPEditor soap={editedSoap} onChange={setEditedSoap} onSave={onSave} />
+          <SOAPEditor
+            soap={editedSoap}
+            templateId={caseData.template_id}
+            onChange={setEditedSoap}
+            onSave={onSave}
+          />
         )}
         {activeTab === 'entities' && caseData.entities && (
           <EntityTags entities={caseData.entities} />
