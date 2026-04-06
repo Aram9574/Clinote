@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls /Users/aramzakzuk/Clinote/frontend/.env*)",
+      "Bash(curl -s http://localhost:8000/health)",
+      "Bash(curl -s http://localhost:8000/)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(curl -s http://localhost:8000/api/v1/health)",
+      "Bash(curl -s http://localhost:8000/docs)",
+      "Bash(PYTHONPATH=. python -m pytest tests/ -v --ignore=tests/e2e)",
+      "Bash(PYTHONPATH=. python3 -m pytest tests/ -v --ignore=tests/e2e)",
+      "Bash(PYTHONPATH=. python3 -m pytest tests/test_cdss_engine.py::test_multiple_critical_values -v)",
+      "Bash(npx tsc:*)",
+      "Bash(echo \"exit: $?\")"
+    ]
+  }
+}
